@@ -4,8 +4,11 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var neo4j = require('neo4j-driver').v1;
 
-var app = express();
 
+var app = express();
+//assets
+app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 //view engine
 
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +34,7 @@ app.get('/', (req, res) => {
 			});
 			console.log(item._fields[0].properties);
 		});
-		res.render('index', {
+		res.render('pages/index', {
 			products: products
 		});
 	})
@@ -40,7 +43,7 @@ app.get('/', (req, res) => {
 	});
 });
 
-app.listen(3000);
+app.listen(3001);
 console.log('Server started on port 3000!');
 
 module.exports = app;
