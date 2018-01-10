@@ -1,0 +1,24 @@
+<% include ../../layouts/top %>
+<div class="row">
+    <div class="col-sm-12">    
+        <h1 class="text-center">Products</h1>
+    </div>
+</div>
+<div class="row">
+<% products.forEach((product) => { %>
+<% include ../../modals/editProduct %>
+    <div class="col-sm-4 panel">
+     <div class="panel-heading"><%= product.title %></div>
+     <div class="panel-body"><%= product.description %></div>
+     <div class="panel-footer">    
+         <form method="post" action="/product/delete">
+            <button type="button" data-toggle="modal" data-target="#edit-product-modal-<%= product.id %>" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+            <input type="hidden" name="id" value="<%= product.id%>">
+            <button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+         </form>
+     </div>
+    </div>
+<% }); %>
+</div>
+
+<% include ../../layouts/bottom %>
