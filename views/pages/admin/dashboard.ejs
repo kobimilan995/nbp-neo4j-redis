@@ -1,24 +1,38 @@
 <% include ../../layouts/top %>
+<% include ../../modals/createProduct %>
 <div class="row">
     <div class="col-sm-12">    
-        <h1 class="text-center">Products</h1>
+        <h1 style="display:inline;">Products</h1><a href="#" data-toggle="modal" data-target="#create-product-modal" class="pull-right" style="display:inline;"><span class="glyphicon glyphicon-plus align-middle"></span> Create new product</a>
     </div>
 </div>
-<div class="row">
+<hr>
+<div class="row row-eq-height">
 <% products.forEach((product) => { %>
 <% include ../../modals/editProduct %>
-    <div class="col-sm-4 panel">
-     <div class="panel-heading"><%= product.title %></div>
-     <div class="panel-body"><%= product.description %></div>
-     <div class="panel-footer">    
-         <form method="post" action="/product/delete">
-            <button type="button" data-toggle="modal" data-target="#edit-product-modal-<%= product.id %>" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-            <input type="hidden" name="id" value="<%= product.id%>">
-            <button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-         </form>
-     </div>
+    <div class="col-sm-4">
+        <div class="panel" style="border: 2px solid #d3d3d3; margin-left: 10px; margin-right: 10px;">
+         <div class="panel-heading"><h3 style="display: inline;"><%= product.title %></h3> <span class="glyphicon glyphicon-question-sign pull-right" data-toggle="tooltip" title="<%= product.description%>" data-placement="bottom">             
+         </span>
+         </div>
+         <div class="row">
+            <img src='../../../uploads/<%= product.image%>' width="80%" style="margin-left: 10%; border-radius: 10px;" height="300px" alt="">
+         </div>
+         
+         <div class="panel-body">
+            <hr>
+            <p>Price: <%= product.price %> $</p>
+            <p>Category: <%= product.category%></p>
+        </div>
+         
+         <div class="panel-footer">    
+             <form method="post" action="/product/delete">
+                <button type="button" data-toggle="modal" data-target="#edit-product-modal-<%= product.id %>" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                <input type="hidden" name="id" value="<%= product.id%>">
+                <button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+             </form>
+         </div>
+        </div>
     </div>
 <% }); %>
 </div>
-
 <% include ../../layouts/bottom %>

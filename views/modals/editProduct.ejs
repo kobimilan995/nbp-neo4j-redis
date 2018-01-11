@@ -8,11 +8,16 @@
         <div class="modal-body">
             <div class="form-group">
               <label for="productTitle">Title</label>
-              <input type="text" name="title" class="form-control" id="productTitle" placeholder="Enter title">
+              <input type="text" name="title" class="form-control" id="productTitle" value="<%= product.title%>" placeholder="Enter title">
             </div>
             <div class="form-group">
               <label for="productDescription">Description</label>
-              <input type="text" name="description" class="form-control" id="productDescription" placeholder="Description">
+              <input type="text" name="description" class="form-control" value="<%= product.description %>" id="productDescription" placeholder="Description">
+            </div>
+
+            <div class="form-group">
+              <label for="productPrice">Price</label>
+              <input type="number" name="price" class="form-control" value="<%= product.price %>" id="productPrice" placeholder="Price">
             </div>
             <input type="hidden" name="id" value="<%= product.id%>">
         </div>
