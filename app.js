@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var fs = require('fs');
 var logger = require('morgan');
@@ -9,6 +10,7 @@ var moment = require('moment');
 
 
 var app = express();
+app.use(session({secret: 'ssshhhhh',   saveUninitialized: true, resave: true}));
 //assets
 app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
@@ -137,6 +139,10 @@ app.post('/product/create', (req, res) => {
 * AUTH ROUTES
 */
 
+var userSession;
+
+//add role [admin, commonUser]
+
 // create account
 app.post('/account/create', (req, res) => {
 	if(req.username == "" || req.password == "" || req.email == "")
@@ -151,25 +157,44 @@ app.post('/account/create', (req, res) => {
 
 });
 
-
 //login
 app.post('/account/login', (req, res) => {
-	//return res.status(400).send(req.body);
+	userSession = req.session;
 	session.run("MATCH (u: User) WHERE u.username='" + req.body.username + "' AND u.password ='" + req.body.password + "' return u").then( result => {
-		res.status(200).send("Loged in.");//result.records);
+		result.records.map(function (record) { 
+			userSession.user =  record._fields[0].properties;
+			return res.status(200).send("Logged in.");
+		});
 	});
 });
 
 //update account
 
 app.post('/account/update', (req, res) => {
-	//return res.status(200).send(req.body);
-	
+	userSession = req.session;
 	session.run("MATCH (u:User) WHERE u.username='"+req.body.username+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.email +"' return u")
 	.then( r => {
+		userSession.user.email = req.body.email;
+		userSession.user.password = req.body.password;
 		return res.status(200).send("Successfully updated account information.");//r.records);
 	});
 });
+
+//logout
+app.get('/logout', (req, res) => {
+	req.session.destroy( function(err) {
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			//should be redirect but for now
+			res.status(200).send("Successfully logged out.");
+		}
+	});
+});
+
 
 
 app.listen(3001);
