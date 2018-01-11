@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', ""));
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', "kizz"));
 var session = driver.session();
 //home route
 app.get('/', (req, res) => {
@@ -104,7 +104,7 @@ app.post('/product/create', (req, res) => {
 	    return res.status(400).send('No files were uploaded.');
 	 
 	  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-	  let sampleFile = req.files.image;
+	  var sampleFile = req.files.image;
 	 
 	  // Use the mv() method to place the file somewhere on your server
 	  var newFileName = req.body.title+Date.now()+'.jpg';
@@ -132,6 +132,24 @@ app.post('/product/create', (req, res) => {
 /*
 * END ADMIN ROUTES
 */
+
+/*
+* AUTH ROUTES
+*/
+
+app.post('/account/create', (req, res) => {
+	if(req.username == "" || req.password == "" || req.email == "")
+		return res.status(400).send('Your username, password or email is empty. Please check it.');
+
+		
+	session.run("CREATE (n:User { username: '" + req.body.username + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
+		return res.status(200).send('Try to log in now.');
+	}).catch(error => {
+		console.log(error);
+	});
+
+})
+
 
 app.listen(3001);
 console.log('Server started on port 3000!');
