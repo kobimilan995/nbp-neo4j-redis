@@ -144,7 +144,7 @@ var userSession;
 //add role [admin, commonUser]
 
 // create account
-app.post('/account/create', (req, res) => {
+app.post('/signup', (req, res) => {
 	if(req.username == "" || req.password == "" || req.email == "")
 		return res.status(400).send('Your username, password or email is empty. Please check it.');
 
@@ -158,7 +158,7 @@ app.post('/account/create', (req, res) => {
 });
 
 //login
-app.post('/account/login', (req, res) => {
+app.post('/login', (req, res) => {
 	userSession = req.session;
 	session.run("MATCH (u: User) WHERE u.username='" + req.body.username + "' AND u.password ='" + req.body.password + "' return u").then( result => {
 		result.records.map(function (record) { 
@@ -170,7 +170,7 @@ app.post('/account/login', (req, res) => {
 
 //update account
 
-app.post('/account/update', (req, res) => {
+app.post('/account-update', (req, res) => {
 	userSession = req.session;
 	session.run("MATCH (u:User) WHERE u.username='"+req.body.username+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.email +"' return u")
 	.then( r => {
@@ -194,6 +194,17 @@ app.get('/logout', (req, res) => {
 		}
 	});
 });
+
+function isUserLoggedIn() {
+	if(req.session.user.email != null && req.session.user.email != "")
+		return true;
+	else
+		return false;
+}
+
+/*
+* AUTH end
+*/
 
 
 
