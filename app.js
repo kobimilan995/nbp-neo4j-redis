@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var fs = require('fs');
 var logger = require('morgan');
@@ -9,6 +10,7 @@ var moment = require('moment');
 
 
 var app = express();
+app.use(session({secret: 'ssshhhhh',   saveUninitialized: true, resave: true}));
 //assets
 app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
@@ -23,7 +25,7 @@ app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', ""));
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', "kizz"));
 var session = driver.session();
 //home route
 app.get('/', (req, res) => {
@@ -104,7 +106,7 @@ app.post('/product/create', (req, res) => {
 	    return res.status(400).send('No files were uploaded.');
 	 
 	  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-	  let sampleFile = req.files.image;
+	  var sampleFile = req.files.image;
 	 
 	  // Use the mv() method to place the file somewhere on your server
 	  var newFileName = req.body.title+Date.now()+'.jpg';
@@ -133,7 +135,80 @@ app.post('/product/create', (req, res) => {
 * END ADMIN ROUTES
 */
 
+/*
+* AUTH ROUTES
+*/
+
+var userSession;
+
+//add role [admin, commonUser]
+
+// create account
+app.post('/signup', (req, res) => {
+	if(req.username == "" || req.password == "" || req.email == "")
+		return res.status(400).send('Your username, password or email is empty. Please check it.');
+
+		
+	session.run("CREATE (n:User { username: '" + req.body.username + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
+		return res.status(200).send('Try to log in now.');
+	}).catch(error => {
+		console.log(error);
+	});
+
+});
+
+//login
+app.post('/login', (req, res) => {
+	userSession = req.session;
+	session.run("MATCH (u: User) WHERE u.username='" + req.body.username + "' AND u.password ='" + req.body.password + "' return u").then( result => {
+		result.records.map(function (record) { 
+			userSession.user =  record._fields[0].properties;
+			return res.status(200).send("Logged in.");
+		});
+	});
+});
+
+//update account
+
+app.post('/account-update', (req, res) => {
+	userSession = req.session;
+	session.run("MATCH (u:User) WHERE u.username='"+req.body.username+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.email +"' return u")
+	.then( r => {
+		userSession.user.email = req.body.email;
+		userSession.user.password = req.body.password;
+		return res.status(200).send("Successfully updated account information.");//r.records);
+	});
+});
+
+//logout
+app.get('/logout', (req, res) => {
+	req.session.destroy( function(err) {
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			//should be redirect but for now
+			res.status(200).send("Successfully logged out.");
+		}
+	});
+});
+
+function isUserLoggedIn() {
+	if(req.session.user.email != null && req.session.user.email != "")
+		return true;
+	else
+		return false;
+}
+
+/*
+* AUTH end
+*/
+
+
+
 app.listen(3001);
-console.log('Server started on port 3000!');
+console.log('Server started on port 3001!');
 
 module.exports = app;
