@@ -37,7 +37,7 @@ var authenticated = function (req, res, next) {
 }
 
 
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', ""));
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', "kizz"));
 var session = driver.session();
 //home route
 app.get('/', (req, res) => {
@@ -163,12 +163,9 @@ app.post('/signup', (req, res) => {
 		return res.status(400).send('Your username, password or email is empty. Please check it.');
 	if(req.body.password != req.body.confirmPassword)
 		return res.status(400).send('Your your password and conform password are not matched. Please check it.');
-	
-	
-//	console.log(req.body);
-//	return;
+
 		
-	session.run("CREATE (n:User { fullname: '" + req.body.fullname + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
+	session.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
 		return res.status(200).send('Try to log in now.');
 	}).catch(error => {
 		console.log(error);
@@ -179,7 +176,7 @@ app.post('/signup', (req, res) => {
 //login
 app.post('/login', (req, res) => {
 	userSession = req.session;
-	session.run("MATCH (u: User) WHERE u.username='" + req.body.username + "' AND u.password ='" + req.body.password + "' return u").then( result => {
+	session.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password + "' return u").then( result => {
 		result.records.map((record) => { 
 			userSession.user =  record._fields[0].properties;
 			res.redirect('/');
