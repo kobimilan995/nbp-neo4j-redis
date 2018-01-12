@@ -24,12 +24,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
+var authenticated = function (req, res, next) {
+  if(req.session.user != undefined)
+  	{
+		next();
+  	}
+	else
+	{
+		res.redirect('/');
+		return;
+	}
+}
 
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', "kizz"));
+
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', ""));
 var session = driver.session();
 //home route
 app.get('/', (req, res) => {
-	res.render('pages/index');
+	res.render('pages/index', {auth: req.session.user});
 });
 
 /*
@@ -37,7 +49,8 @@ app.get('/', (req, res) => {
 */
 
 //dashboard
-app.get('/admin/dashboard', (req, res) => {
+app.get('/admin/dashboard',authenticated, (req, res) => {
+
 	var products = [];
 	var categories = [];
 	session
@@ -69,7 +82,8 @@ app.get('/admin/dashboard', (req, res) => {
 		});
 		res.render('pages/admin/dashboard', {
 			products: products,
-			categories: categories
+			categories: categories,
+			auth: req.session.user
 		});
 	})
 	.catch((error) => {
@@ -161,9 +175,11 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
 	userSession = req.session;
 	session.run("MATCH (u: User) WHERE u.username='" + req.body.username + "' AND u.password ='" + req.body.password + "' return u").then( result => {
-		result.records.map(function (record) { 
+		result.records.map((record) => { 
 			userSession.user =  record._fields[0].properties;
-			return res.status(200).send("Logged in.");
+			res.redirect('/');
+		}).catch(error => {
+			console.log(error);
 		});
 	});
 });
@@ -190,7 +206,7 @@ app.get('/logout', (req, res) => {
 		else
 		{
 			//should be redirect but for now
-			res.status(200).send("Successfully logged out.");
+			res.redirect('/');
 		}
 	});
 });

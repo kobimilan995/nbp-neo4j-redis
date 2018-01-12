@@ -15,8 +15,15 @@
         </div>
          <ul class="nav navbar-nav navbar-right pull-right">
           <li><a href="/admin/dashboard"><span class="glyphicon glyphicon-lock"></span> Admin panel</a></li>
+          <%if (auth == undefined) { %>
           <li><a href="#" data-toggle="modal" data-target="#register-modal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
           <li><a href="#" data-toggle="modal" data-target="#login-modal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <% } %>
+
+          <%if (auth != undefined) { %>
+          <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+          <% } %>
+          
         </ul>
     </div>
 </nav>
