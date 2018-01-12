@@ -159,11 +159,16 @@ var userSession;
 
 // create account
 app.post('/signup', (req, res) => {
-	if(req.username == "" || req.password == "" || req.email == "")
+	if(req.body.fullname == "" || req.password == "" || req.email == "")
 		return res.status(400).send('Your username, password or email is empty. Please check it.');
-
+	if(req.body.password != req.body.confirmPassword)
+		return res.status(400).send('Your your password and conform password are not matched. Please check it.');
+	
+	
+//	console.log(req.body);
+//	return;
 		
-	session.run("CREATE (n:User { username: '" + req.body.username + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
+	session.run("CREATE (n:User { fullname: '" + req.body.fullname + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'})").then( resoult =>{
 		return res.status(200).send('Try to log in now.');
 	}).catch(error => {
 		console.log(error);
@@ -188,7 +193,7 @@ app.post('/login', (req, res) => {
 
 app.post('/account-update', (req, res) => {
 	userSession = req.session;
-	session.run("MATCH (u:User) WHERE u.username='"+req.body.username+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.email +"' return u")
+	session.run("MATCH (u:User) WHERE u.email='"+req.body.email+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.newEmail +"' return u")
 	.then( r => {
 		userSession.user.email = req.body.email;
 		userSession.user.password = req.body.password;
