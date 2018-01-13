@@ -44,6 +44,11 @@ app.get('/', (req, res) => {
 	res.render('pages/index', {auth: req.session.user});
 });
 
+//about route
+app.get('/about', (req,res) => {
+	res.render('pages/about', { auth: req.session.user });
+});
+
 /*
 * ADMIN ROUTES
 */
@@ -179,6 +184,8 @@ app.post('/login', (req, res) => {
 	session.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password + "' return u").then( result => {
 		result.records.map((record) => { 
 			userSession.user =  record._fields[0].properties;
+			if(userSession.user.email == undefined || userSession.user.email == null)
+				return res.status(404).send('Unknown user.');
 			res.redirect('/');
 		}).catch(error => {
 			console.log(error);
