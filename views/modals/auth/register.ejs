@@ -1,11 +1,17 @@
 <div class="modal fade" id="register-modal">
   <div class="modal-dialog" role="document">
-    <form method="POST" action="/signup">
+    <form method="POST" action="/signup" enctype="multipart/form-data">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Register</h5>
         </div>
         <div class="modal-body">
+
+          <!--  <div class="form-group">
+                <label for="profileImage">Profile image</label>
+                <input type="file" name="userImage" class="form-control" id="productImage" class="file" required>
+              </div> -->  
+
             <div class="form-group">
               <label for="userName">Full Name</label>
               <input type="text" name="fullName" class="form-control" id="userName" placeholder="Enter full name">
