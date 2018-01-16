@@ -1,5 +1,5 @@
 
-var Neo4jsession = require('./ne4jConfig');
+Neo4jsession = require('./ne4jConfig');
 authenticated = require('./authMidd');
 var express = require('express')
   , router = express.Router();
@@ -83,22 +83,43 @@ router.get('/logout', (req, res) => {
 	});
 });
 
-
+//profile
 router.get('/profile', authenticated, (req, res) => {
 	return res.render('pages/profile', { auth: req.session.user});
 });
 
+//changeEmail
 router.post('/changeEmail', authenticated, (req, res) => {
 	userSession = req.session;
 
-    Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='"+ req.body.newEmail + "' return u").than( result.records.map( record => {
-			userSession.user = record._fields[0].properties;
-
-			return res.status(200).send("Successfully changed user email.");
+    Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='" + req.body.newEmail + "' return u").then( result => {
+			result.records.map( (record) => {
+				userSession.user = undefined;//record._fields[0].properties;
+				return res.redirect('/');
+			})
 		}).catch(err => {
-			return res.status(500).send(error);
-		}));
+			return res.status(500).send(err);
+		});
 	});
+
+
+//changePassword
+router.post('/changePassword', authenticated, (req, res) => {
+	userSession = req.session;
+	if(req.body.newPassword == req.body.confirmPassword)
+	{
+
+		Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.password='" + req.body.newPassword + "' return u").then( result => {
+			result.records.map((record) => {
+				userSession.user = undefined;
+				return res.redirect('/');
+			})
+		}).catch(err => {
+			return res.status(500).send(err);
+		});
+	} else
+		return res.status(500).send("Dose not match new password and confirm password.");
+});
 
 /*
 * AUTH end
