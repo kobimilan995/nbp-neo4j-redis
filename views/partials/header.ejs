@@ -21,8 +21,13 @@
           <% } %>
 
           <%if (auth != undefined) { %>
-          <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
-          <% } %>
+             <li>
+                <a href="/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+            </li>
+            <li>
+                <a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+            </li> 
+            <% } %>
           
         </ul>
     </div>
