@@ -34,9 +34,10 @@ router.post('/signup', (req, res) => {
 	//return res.status(200).send(req.body);
 
 		
-	Neo4jsession.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '"  + req.body.email + "'," +
-	" profileImage: ''})").then( resoult =>{
-		return res.status(200).send('Try to log in now.');
+	Neo4jsession.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
+	 + req.body.email + "'," + " profileImage: '', role: 'buyer'})").then( resoult =>{
+		//return res.status(200).send('Try to log in now.');
+		return res.render('/');
 	}).catch(error => {
 		console.log(error);
 	});
@@ -46,7 +47,8 @@ router.post('/signup', (req, res) => {
 //login
 router.post('/login', (req, res) => {
 	userSession = req.session;
-	Neo4jsession.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password + "' return u").then( result => {
+	Neo4jsession.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password +
+	 "' return u").then( result => {
 		result.records.map((record) => { 
 			userSession.user =  record._fields[0].properties;
 			res.redirect('/');
@@ -60,7 +62,8 @@ router.post('/login', (req, res) => {
 
 router.post('/account-update', (req, res) => {
 	userSession = req.session;
-	Neo4jsession.run("MATCH (u:User) WHERE u.email='"+req.body.email+"' SET u.password='" + req.body.password + "' SET u.email='" + req.body.newEmail +"' return u")
+	Neo4jsession.run("MATCH (u:User) WHERE u.email='"+req.body.email+"' SET u.password='" + req.body.password 
+	+ "' SET u.email='" + req.body.newEmail +"' return u")
 	.then( result => {
 		userSession.user.email = req.body.email;
 		userSession.user.password = req.body.password;
@@ -92,7 +95,8 @@ router.get('/profile', authenticated, (req, res) => {
 router.post('/changeEmail', authenticated, (req, res) => {
 	userSession = req.session;
 
-    Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='" + req.body.newEmail + "' return u").then( result => {
+	Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='" 
+	+ req.body.newEmail + "' return u").then( result => {
 			result.records.map( (record) => {
 				userSession.user = undefined;//record._fields[0].properties;
 				return res.redirect('/');
@@ -109,7 +113,8 @@ router.post('/changePassword', authenticated, (req, res) => {
 	if(req.body.newPassword == req.body.confirmPassword)
 	{
 
-		Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.password='" + req.body.newPassword + "' return u").then( result => {
+		Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.password='" 
+		+ req.body.newPassword + "' return u").then( result => {
 			result.records.map((record) => {
 				userSession.user = undefined;
 				return res.redirect('/');
