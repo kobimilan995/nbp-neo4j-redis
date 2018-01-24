@@ -1,0 +1,34 @@
+<% include ../layouts/top %>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">   
+        <% products.forEach((product) => { %>
+            <div class="col-sm-4">
+                <div class="panel" style="border: 2px solid #d3d3d3; margin-left: 10px; margin-right: 10px;">
+                 <div class="panel-heading"><h3 style="display: inline;"><%= product.title %></h3> <span class="glyphicon glyphicon-question-sign pull-right" data-toggle="tooltip" title="<%= product.description%>" data-placement="bottom">             
+                 </span>
+                 </div>
+                 <div class="row">
+                    <img src='../../../uploads/<%= product.image%>' width="80%" style="margin-left: 10%; border-radius: 10px;" height="300px" alt="">
+                 </div>
+                 
+                 <div class="panel-body">
+                    <hr>
+                    <p>Price: <%= product.price %> $</p>
+                    <p>Category: <%= product.category%></p>
+                </div>
+                 
+                 <div class="panel-footer">
+                    <form action="/product/removeFromCart" method="POST">
+                        <input type="hidden" name="product_title" value="<%= product.title %>">
+                        <input type="hidden" name="page_type" value="shoppingCart">
+                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
+                    </form>
+                 </div>
+                </div>
+            </div>
+        <% }); %>
+        </div>
+    </div>
+</div>
+<% include ../layouts/bottom%>

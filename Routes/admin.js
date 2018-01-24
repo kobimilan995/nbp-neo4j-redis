@@ -83,16 +83,14 @@ router.post('/product/create', (req, res) => {
 	 
 	  // Use the mv() method to place the file somewhere on your server
 	  var newFileName = req.body.title+Date.now()+'.jpg';
-	  var newFilePath = __dirname + '/public/uploads/'+newFileName;
+	  var newFilePath = __dirname + '/../public/uploads/'+newFileName;
 	  sampleFile.mv(newFilePath, function(err) {
 	    if (err)
 	      return res.status(500).send(err);
 	  });
-	  Neo4jsession.run("CREATE (n:Product { title: '"+req.body.title+"', description: '"+req.body.description
-	  +"', price:'"+req.body.price+"' , image: '"+newFileName+"' }) RETURN n ")
+	  Neo4jsession.run("CREATE (n:Product { title: '"+req.body.title+"', description: '"+req.body.description+"', price:'"+req.body.price+"' , image: '"+newFileName+"' }) RETURN n ")
 		.then(result => {
-			Neo4jsession.run("MATCH (p:Product),(c:Category) WHERE ID(p)="+result.records[0]._fields[0].identity.low+" AND ID(c)="+req.body.category+" CREATE (p)-[r:BELONGS_TO]->(c) return r")
-				.then(result => {
+			Neo4jsession.run("MATCH (p:Product),(c:Category) WHERE ID(p)="+result.records[0]._fields[0].identity.low+" AND ID(c)="+req.body.category+" CREATE (p)-[r:BELONGS_TO]->(c) return r").then(result => {
 					res.redirect('/admin/dashboard');
 				})
 				.catch(error => {

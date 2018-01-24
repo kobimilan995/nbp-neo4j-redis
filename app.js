@@ -36,11 +36,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routes
 app.use(require('./Routes/auth'));
 app.use(require('./Routes/admin'));
-
-//home route
-app.get('/', (req, res) => {
-	res.render('pages/index', {auth: req.session.user});
+var unAuthenticated = function (req, res, next) {
+    console.log(req.param);
+    if(req.session.user == undefined)
+        {
+          next();
+        }
+      else
+      {
+          res.redirect('/home');
+          return;
+      }
+  }
+//landing page
+app.get('/', unAuthenticated, (req, res) => {
+	res.render('pages/landing', {
+			auth: req.session.user
+		});
 });
+
+
 
 //about route
 app.get('/about', (req,res) => {
