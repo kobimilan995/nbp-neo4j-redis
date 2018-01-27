@@ -3,6 +3,7 @@ Neo4jsession = require('./ne4jConfig');
 authenticated = require('./authMidd');
 var express = require('express')
   , router = express.Router();
+var moment = require('moment');
 
  
 /*
@@ -205,7 +206,6 @@ router.post('/product/removeFromCart', authenticated, (req, res) => {
 	});
 	
 });
-
 //remove from cart
 router.get('/shoppingCart', authenticated, (req, res) => {
 	shoppingCartProducts = [];
@@ -229,7 +229,76 @@ router.get('/shoppingCart', authenticated, (req, res) => {
 		console.log(error);
 	});
 });
+// get product view
+router.get('/product/:id', authenticated, (req, res) => {
+	shoppingCartProducts = [];
+	Neo4jsession
+	.run("MATCH (u:User { email: '"+req.session.user.email+"' })<-[:IS_ORDERED_BY]-(p:Product)-[r:BELONGS_TO]-(b:Category) RETURN p,b").then((result) => {
+		result.records.forEach((item) => {
+			shoppingCartProducts.push({
+				id: item._fields[0].identity.low,
+				title:item._fields[0].properties.title,
+				description:item._fields[0].properties.description,
+				price:item._fields[0].properties.price,
+				image:item._fields[0].properties.image,
+				category:item._fields[1].properties.title
+			});
+		});
+	}).catch(error => {
+		console.log(error);
+	});
 
+	Neo4jsession
+	.run("MATCH (p:Product)-[r:BELONGS_TO]-(b:Category) WHERE ID(p) = "+req.params.id+"  RETURN p,b").then((result) => {
+		var product = result.records[0]._fields[0].properties;
+		product.id = result.records[0]._fields[0].identity.low;
+		product.category = {
+			id: result.records[0]._fields[1].identity.low,
+			title: result.records[0]._fields[1].properties.title
+		}
+		product.isInShoppingCart = false;
+		shoppingCartProducts.forEach(scProduct => {
+			if(scProduct.id == product.id) {
+				product.isInShoppingCart = true;
+			}
+		});
+		product.comments = [];
+		Neo4jsession
+		.run("MATCH (u:User)<-[rr:IS_WRITTEN_BY]-(c:Comment)<-[r:IS_COMMENTED]-(p:Product) WHERE ID(p) = "+req.params.id+" RETURN c,u ORDER BY c.created_at DESC").then(result2 => {
+			result2.records.forEach(item2 => {
+				product.comments.push({
+					id: item2._fields[0].identity.low,
+					text: item2._fields[0].properties.text,
+					created_at: item2._fields[0].properties.created_at,
+					diffForHumans: moment(item2._fields[0].properties.created_at).fromNow(),
+					user: {
+						id: item2._fields[1].identity.low,
+						username: item2._fields[1].properties.username
+					}
+				});
+			});
+			console.log('product', product);
+			res.render('pages/product', {
+				auth: req.session.user,
+				product: product
+			});
+		});
+
+		
+	}).catch(error => {
+		console.log(error);
+	});
+});
+//add comment
+router.post('/comment/add', authenticated, (req,res) => {
+	Neo4jsession
+	// .run("MATCH (p:Product {title: '"+req.body.product_title+"'}), (u:User {email: '"req.session.user.email"'}) CREATE (c:Comment {text:'"+req.body.comment+"'})")
+	           // (u:User {email: '"req.session.user.email"'})
+	.run("MATCH (p:Product {title: '"+req.body.product_title+"'}), (u:User {email: '"+req.session.user.email+"'}) CREATE (u)<-[rr:IS_WRITTEN_BY]-(c:Comment {created_at: '"+moment().format()+"',text:'"+req.body.comment+"' })<-[r:IS_COMMENTED]-(p)")
+	.then(response => {
+		res.redirect('/product/'+req.body.product_id);
+	})
+});
 /*
 * AUTH end
 */
