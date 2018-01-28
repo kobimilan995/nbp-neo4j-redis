@@ -12,6 +12,13 @@ var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var moment = require('moment');
 
+//redis set up
+var redis = require('redis');
+var redisClient = redis.createClient();
+
+redisClient.set('key', 'Hello world!', redis.print);
+
+redisClient.get('key', (err, resp) => { console.log(resp); } );
 
 //neo4j
 var Neo4jsession = require('./Routes/ne4jConfig');
