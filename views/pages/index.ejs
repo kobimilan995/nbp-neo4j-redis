@@ -50,7 +50,7 @@
                       <% if(product.isInShoppingCart == false) { %>
                         <form action="/product/addToCart" method="POST">
                             <input type="hidden" name="product_title" value="<%= product.title %>">
-                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
+                            <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
                         </form>
                         <% } %>
 
@@ -58,7 +58,7 @@
                         <form action="/product/removeFromCart" method="POST">
                             <input type="hidden" name="product_title" value="<%= product.title %>">
                             <input type="hidden" name="page_type" value="index">
-                            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
+                            <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
                         </form>
                         <% } %>
                     </div>
@@ -69,7 +69,7 @@
 
     <div class="col-sm-3">        
         <div class="well">
-            <h3>Most popular products</h3>
+            <h6>Most popular products:</h6>
         </div>
     </div>
 </div>

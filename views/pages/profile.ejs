@@ -7,10 +7,12 @@
         <div class="profileDiv changeInfo">
                 <p>Email: <%= auth.email %></p>
                 <a href="#" class="btn btn-success" data-toggle="modal" data-target="#changeEmail-modal">
-                        <span class="glyphicon glyphicon-pencil"></span> Change email
+                        <i class="fas fa-edit"></i> Change email
                 </a>
             
-                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#changePassword-modal"><span class="glyphicon glyphicon-pencil"></span> Change password</a>
+                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#changePassword-modal">
+                        <i class="fas fa-edit"></i> Change password
+                </a>
         </div>
             
 
@@ -37,13 +39,13 @@
                             justify-content: space-around;
                             align-items: center;">
                                 <label class="btn btn-raised btn-round btn-default btn-file">
-                                    <span class="fileinput-new">Select new picture</span>
-                                    <span class= "fileinput-exists">Select new picture</button>
+                                    <span class="fileinput-new"><i class="far fa-hdd"></i> Select new picture</span>
+                                    <span class= "fileinput-exists"><i class="far fa-hdd"></i>Select other picture</button>
                                     <input type="file" style=" display:none" name="userImage" placeholder="" />
                                 </label>
                                     
                                 <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-                                <button class="btn btn-info btn-round fileinput-exists" type="submit">Save</button>
+                                <button class="btn btn-info btn-round fileinput-exists" type="submit"><i class="material-icons">save</i>Save</button>
                             </div>
                     </div>
             </form>
