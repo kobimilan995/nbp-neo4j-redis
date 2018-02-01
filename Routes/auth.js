@@ -4,6 +4,7 @@ authenticated = require('./authMidd');
 var express = require('express')
   , router = express.Router();
 var moment = require('moment');
+var path = require("path");
 
  
 /*
@@ -23,8 +24,8 @@ router.post('/signup', (req, res) => {
 	
 
 	//error
-	/*var image = req.files.userImage;
-	var imageName =  Date.now() + '.jpg';
+	var image = req.files.userImage;
+	/*var imageName =  Date.now() + '.jpg';
 	var imagePath = __dirname + '/public/uploads/users/' + imageName;
 	image.mv(imagePath, (err) => {
 		if(err)
@@ -34,11 +35,34 @@ router.post('/signup', (req, res) => {
 	//console.log(req.body);
 	//return res.status(200).send(req.body);
 
+	console.log("1");
+
 		
-	Neo4jsession.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
-	 + req.body.email + "'," + " profileImage: '', role: 'buyer'})").then( resoult =>{
+	Neo4jsession.run("CREATE (u:User { username:'" + req.body.username + "',fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
+	 + req.body.email + "'," + " profileImage: '', role: 'buyer'}) return u").then( result =>{
 		//return res.status(200).send('Try to log in now.');
+		//console.log(result.records[0]._fields[0].identity.low);
+		//return;
+		console.log("2");
+
+		var imageName = result.records[0]._fields[0].identity.low + ".jpg";
+		var imagePath = path.join( __dirname , '/../' , 'public/uploads/usersProfiles/' + imageName);
+
+		image.mv(imagePath, (err) => {
+			if(err)
+				return res.status(500).send(err);
+		});
+
+		//conosle.log(imagePath);
+		Neo4jsession.run
+		("MATCH (u: User) WHERE u.email='" + req.body.email + "' SET u.profileImage=ID(u)+" + "'.jpg'" + " return u").then( rec => {
+		
+		console.log("3.");	
+		console.log(rec);
+
+
 		return res.redirect('/');
+		})
 	}).catch(error => {
 		console.log(error);
 	});
