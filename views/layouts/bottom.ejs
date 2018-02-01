@@ -1,21 +1,95 @@
 <footer>
     <% include ../partials/footer %>
 </footer>
-</body>
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); 
-});
-function refreshPage () {
-    var page_y = document.getElementsByTagName("body")[0].scrollTop;
-    window.location.href = window.location.href.split('?')[0] + '?page_y=' + page_y;
-}
-window.onload = function () {
-    setTimeout(refreshPage, 35000);
-    if ( window.location.href.indexOf('page_y') != -1 ) {
-        var match = window.location.href.split('?')[1].split("&")[0].split("=");
-        document.getElementsByTagName("body")[0].scrollTop = match[1];
-    }
-}
+
+
+
+  <!--   Core JS Files   -->
+  <script src="./MatirialCss/assets/js/core/jquery.min.js"></script>
+  <script src="./MatirialCss/assets/js/core/popper.min.js"></script>
+  <script src="./MatirialCss/assets/js/bootstrap-material-design.js"></script>
+
+  <!-- Plugin for Date Time Picker and Full Calendar Plugin-->
+  <script src="../MatirialCss/assets/js/plugins/moment.min.js"></script>
+
+  <!-- Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <!-- <script src="./MatirialCss/assets/js/plugins/bootstrap-select.js"></script> -->
+  <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+
+
+  <!-- Plugin for Tags, full documentation here: http://xoxco.com/projects/code/tagsinput/  -->
+  <!-- <script src="./assets/js/plugins/bootstrap-tagsinput.js"></script> -->
+
+  <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+  <!-- <script src="./assets/js/plugins/jasny-bootstrap.min.js"></script> -->
+  <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+
+  <!-- Plugin for Small Gallery in Product Page -->
+  <!-- <script src="./assets/js/plugins/jquery.flexisel.js"></script> -->
+
+  <!-- Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+  <script src="./MatirialCss/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
+
+  <!-- Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+  <script src="./MatirialCss/assets/js/plugins/nouislider.min.js"></script>
+
+  <!-- Material Kit Core initialisations of plugins and Bootstrap Material Design Library -->
+  <script src="./MatirialCss/assets/js/material-kit.js?v=2.0.0"></script>
+
+  <style>
+          .contain {
+              width: 100%;
+              margin: 0;
+              display: flex;
+          }
+  
+          .main {
+              width: 80%;
+              margin: 0;
+              background-color: transparent;
+          }
+  
+          .sideBar {
+              margin: 0;
+              width: 20%;
+          }
+
+          .modelClass {
+            background-color: #E5E5E5;
+            color: #3C4858;
+          
+          }
+
+          .modelClass label {
+              width: 50%;
+          }
+
+        </style>
+        </body>
+        <script>
+        // $(document).ready(function(){
+        //     $('[data-toggle="tooltip"]').tooltip(); 
+        // });
+        // function refreshPage () {
+        //     var page_y = document.getElementsByTagName("body")[0].scrollTop;
+        //     window.location.href = window.location.href.split('?')[0] + '?page_y=' + page_y;
+        // }
+        // window.onload = function () {
+        //     setTimeout(refreshPage, 35000);
+        //     if ( window.location.href.indexOf('page_y') != -1 ) {
+        //         var match = window.location.href.split('?')[1].split("&")[0].split("=");
+        //         document.getElementsByTagName("body")[0].scrollTop = match[1];
+        //     }
+        // }
 </script>
 </html>

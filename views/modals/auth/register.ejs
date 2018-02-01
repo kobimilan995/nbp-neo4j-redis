@@ -1,4 +1,4 @@
-<div class="modal fade" id="register-modal">
+<!-- <div class="modal fade" id="register-modal">
   <div class="modal-dialog" role="document">
     <form method="POST" action="/signup" enctype="multipart/form-data">
       <div class="modal-content">
@@ -12,7 +12,7 @@
                 <input type="file" name="userImage" class="form-control" id="productImage" class="file" required>
               </div> -->  
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="userName">Full Name</label>
               <input type="text" name="fullName" class="form-control" id="userName" placeholder="Enter full name">
             </div>
@@ -36,4 +36,65 @@
       </div>
     </form>
   </div>
+</div> -->
+
+
+
+<div class="modal fade" id="register-modal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                  
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="/signup" enctype="multipart/form-data">
+                        <h3 class="description text-center">Register</h3>
+                        <div class="card-body text-center">
+
+                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                            <div class="fileinput-new thumbnail img-raised">
+                                <img src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" alt="...">
+                            </div>
+                            
+                            <div class="fileinput-preview fileinput-exists thumbnail img-raised" style="max-width: 240px; max-height: 300px;"></div>
+                            
+                            <div>
+                                <label class="btn btn-raised btn-round btn-default btn-file">
+                                    <span class="fileinput-new">Select image</span>
+                                    <span class="fileinput-exists">Change</span>
+                                    <input type="file" style=" display:none" name="profileImage" placeholder="" />
+                                </label>
+                                <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                            </div>
+                        </div>
+                      
+                        <div class="form-group label-floating">
+                            <input type="text" name="fullName" class="form-control" placeholder="Full name" required/>
+                        </div>
+
+                        <div class="form-group label-floating">
+                            <input type="text" name="email" class="form-control" placeholder="Email" required/>
+                        </div>
+                            
+                        <div class="form-group label-floating">
+                              <input type="text" name="password" class="form-control" placeholder="Password" required />
+                        </div>
+
+                        <div class="form-group label-floating">
+                            <input type="text" name="confirmPassword" class="form-control" placeholder="Confirm password" required />
+                        </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <button type="submit" class="btn btn-info" style="width: 50%">Register</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 50%">Close</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

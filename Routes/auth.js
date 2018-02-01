@@ -38,7 +38,7 @@ router.post('/signup', (req, res) => {
 	Neo4jsession.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
 	 + req.body.email + "'," + " profileImage: '', role: 'buyer'})").then( resoult =>{
 		//return res.status(200).send('Try to log in now.');
-		return res.render('/');
+		return res.redirect('/');
 	}).catch(error => {
 		console.log(error);
 	});
@@ -47,6 +47,9 @@ router.post('/signup', (req, res) => {
 
 //login
 router.post('/login', (req, res) => {
+	
+	console.log( "req.body:" + req.body);
+
 	userSession = req.session;
 	Neo4jsession.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password +
 	 "' return u").then( result => {
