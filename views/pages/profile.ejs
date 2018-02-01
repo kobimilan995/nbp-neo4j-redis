@@ -2,13 +2,14 @@
 <% include ../modals/changeProfileInfo/changePassword %>
 <% include ../modals/changeProfileInfo/changeProfileEmail %>
 
-<div>
+<div class="profileDiv">
     <p>Email: <%= auth.email %></p>
     <a href="#" data-toggle="modal" data-target="#changeEmail-modal">
             <span class="glyphicon glyphicon-pencil"></span> Change email
     </a>
+
+    <a href="#" data-toggle="modal" data-target="#changePassword-modal"><span class="glyphicon glyphicon-pencil"></span> Change password</a>
 </div>
 <div>
-    <a href="#" data-toggle="modal" data-target="#changePassword-modal"><span class="glyphicon glyphicon-pencil"></span> Change password</a>
 </div>
 <% include ../layouts/bottom %>
