@@ -1,4 +1,4 @@
-<div class="modal fade" id="login-modal">
+<!--<div class="modal fade modelClass" id="login-modal">
   <div class="modal-dialog" role="document">
     <form method="POST" action="/login">
       <div class="modal-content">
@@ -7,11 +7,15 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-              <label for="userEmail">Email</label>
+              <div>
+                <label for="userEmail">Email:</label>
+              </div>
               <input type="email" name="email" class="form-control" id="userEmail" placeholder="Enter email">
             </div>
             <div class="form-group">
-              <label for="userPassword">Password</label>
+              <div>
+                  <label for="userPassword">Password:</label>
+              </div>
               <input type="password" name="password" class="form-control" id="userPassword" placeholder="Enter password">
             </div>
         </div>
@@ -22,4 +26,38 @@
       </div>
     </form>
   </div>
+</div> -->
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                  
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="/login" enctype="multipart/form-data">
+                        <h3 class="description text-center">Log in</h3>
+                        <div class="card-body text-center">
+                           
+                        <div class="form-group label-floating">
+                            <input type="text" name="email" class="form-control" placeholder="Email" />
+                        </div>
+                            
+                        <div class="form-group label-floating">
+                              <input type="text" name="password" class="form-control" placeholder="Password" />
+                        </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <button type="submit" class="btn btn-info" style="width: 50%">Login</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 50%">Close</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

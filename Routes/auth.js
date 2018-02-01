@@ -4,6 +4,7 @@ authenticated = require('./authMidd');
 var express = require('express')
   , router = express.Router();
 var moment = require('moment');
+var path = require("path");
 
  
 /*
@@ -23,8 +24,8 @@ router.post('/signup', (req, res) => {
 	
 
 	//error
-	/*var image = req.files.userImage;
-	var imageName =  Date.now() + '.jpg';
+	var image = req.files.userImage;
+	/*var imageName =  Date.now() + '.jpg';
 	var imagePath = __dirname + '/public/uploads/users/' + imageName;
 	image.mv(imagePath, (err) => {
 		if(err)
@@ -34,11 +35,31 @@ router.post('/signup', (req, res) => {
 	//console.log(req.body);
 	//return res.status(200).send(req.body);
 
+
 		
-	Neo4jsession.run("CREATE (n:User { fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
-	 + req.body.email + "'," + " profileImage: '', role: 'buyer'})").then( resoult =>{
+	Neo4jsession.run("CREATE (u:User { username:'" + req.body.username + "',fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
+	 + req.body.email + "'," + " profileImage: '', role: 'buyer'}) return u").then( result =>{
 		//return res.status(200).send('Try to log in now.');
-		return res.render('/');
+		//console.log(result.records[0]._fields[0].identity.low);
+		//return;
+
+		var imageName = result.records[0]._fields[0].identity.low + ".jpg";
+		var imagePath = path.join( __dirname , '/../' , 'public/uploads/usersProfiles/' + imageName);
+
+		image.mv(imagePath, (err) => {
+			if(err)
+				return res.status(500).send(err);
+		});
+
+		//conosle.log(imagePath);
+		Neo4jsession.run
+		("MATCH (u: User) WHERE u.email='" + req.body.email + "' SET u.profileImage=ID(u)+" + "'.jpg'" + " return u").then( rec => {
+		
+		console.log(rec);
+
+
+		return res.redirect('/');
+		})
 	}).catch(error => {
 		console.log(error);
 	});
@@ -47,6 +68,9 @@ router.post('/signup', (req, res) => {
 
 //login
 router.post('/login', (req, res) => {
+	
+//	console.log( "req.body:" + req.body);
+
 	userSession = req.session;
 	Neo4jsession.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password +
 	 "' return u").then( result => {
@@ -99,6 +123,13 @@ router.get('/profile', authenticated, (req, res) => {
 //changeEmail
 router.post('/changeEmail', authenticated, (req, res) => {
 	userSession = req.session;
+	
+
+
+		image.mv(imagePath, (err) => {
+			if(err)
+				return res.status(500).send(err);
+		});
 
 	Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='" 
 	+ req.body.newEmail + "' return u").then( result => {
@@ -111,6 +142,34 @@ router.post('/changeEmail', authenticated, (req, res) => {
 		});
 	});
 
+
+
+router.post('/changeProfileImage', authenticated, (req, res) => {
+	userSession = req.session;
+	//console.log(req.body);
+
+	//console.log(userSession.user);
+	//return;
+
+	var image = req.files.userImage;
+
+
+	
+
+	Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' return u").then( result => {
+				var imageName = result.records[0]._fields[0].identity.low + ".jpg";
+				var imagePath = path.join( __dirname , '/../' , 'public/uploads/usersProfiles/' + imageName);
+				//userSession.user = undefined;//record._fields[0].properties;
+				image.mv(imagePath, (err) => {
+					if(err)
+						return res.status(500).send(err);
+				});
+
+				return res.redirect('/profile');
+		}).catch(err => {
+			return res.status(500).send(err);
+		});
+	});
 
 //changePassword
 router.post('/changePassword', authenticated, (req, res) => {

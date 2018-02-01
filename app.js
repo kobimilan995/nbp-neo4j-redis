@@ -1,6 +1,6 @@
 
 var express = require('express');
-//var router = express.Router();
+var router = express.Router();
 var session = require('express-session');
 
 var path = require('path');
@@ -16,9 +16,9 @@ var moment = require('moment');
 var redis = require('redis');
 var redisClient = redis.createClient();
 
-redisClient.set('key', 'Hello world!', redis.print);
+//redisClient.set('key', 'Hello world!', redis.print);
 
-redisClient.get('key', (err, resp) => { console.log(resp); } );
+//redisClient.get('key', (err, resp) => { console.log(resp); } );
 
 //neo4j
 var Neo4jsession = require('./Routes/ne4jConfig');
@@ -41,8 +41,10 @@ app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //routes
-app.use(require('./Routes/auth'));
-app.use(require('./Routes/admin'));
+var authR = require('./Routes/auth');
+var adminR = require('./Routes/admin'); 
+app.use(authR);
+app.use(adminR);
 var unAuthenticated = function (req, res, next) {
     console.log(req.param);
     if(req.session.user == undefined)
@@ -69,6 +71,9 @@ app.get('/about', (req,res) => {
 	res.render('pages/about', { auth: req.session.user });
 });
 
+
+//console.log(adminR.stack);
+//console.log(authR.stack);
 
 app.listen(3001);
 console.log('Server started on port 3001!');

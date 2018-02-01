@@ -2,42 +2,38 @@
 <div class="row">
     <div class="col-sm-8">
 		<div class="row">
-			<div class="col-sm-8">
-				<b><h1><%= product.title%></h1></b>
-				<p>
-					<%= product.description%>
-				</p>
-				<h3>Price: <%= product.price%> $</h3>
-				<% if(product.isInShoppingCart == false) { %>
-                <form action="/product/addToCart" method="POST">
-                    <input type="hidden" name="product_title" value="<%= product.title %>">
-                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
-                </form>
-                <% } %>
-
-                <% if(product.isInShoppingCart == true) {%>
-                <form action="/product/removeFromCart" method="POST">
-                    <input type="hidden" name="product_title" value="<%= product.title %>">
-                    <input type="hidden" name="page_type" value="index">
-                    <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
-                </form>
-                <% } %>
+			<div class="col-sm-12" style="display:flex;">
+								<div class="col-sm-8 text-center" style="    display: flex;
+								flex-direction: column;
+								justify-content: space-evenly;">
+										<b><h1><%= product.title%></h1></b>
+										<p>
+											<%= product.description%>
+										</p>
+										<h3>Price: <%= product.price%> $</h3>
+										<% if(product.isInShoppingCart == false) { %>
+														<form action="/product/addToCart" method="POST">
+																<input type="hidden" name="product_title" value="<%= product.title %>">
+																<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
+														</form>
+														<% } %>
+						
+														<% if(product.isInShoppingCart == true) {%>
+														<form action="/product/removeFromCart" method="POST">
+																<input type="hidden" name="product_title" value="<%= product.title %>">
+																<input type="hidden" name="page_type" value="index">
+																<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
+														</form>
+														<% } %>
+									
+								</div>
+								<div class="col-sm-4">
+										<img src='../../../uploads/<%= product.image%>' style="max-width: 240px; max-height: 300px;" alt="">
+								</div>
 			</div>
-			
-			<div class="col-sm-4">
-				<img src='../../../uploads/<%= product.image%>' width="80%" style="margin-left: 10%; border-radius: 10px;" height="300px" alt="">
-			</div>
 
-			<form action="/comment/add" method="POST">
-			  <div class="form-group">
-			    <label for="comment">Add comment</label>
-			    <input type="hidden" name="product_title" value="<%=product.title%>">
-			    <input type="hidden" name="product_id" value="<%=product.id%>">
-			    <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp" placeholder="Enter comment">
-			  </div>
-			</form>
 			<% product.comments.forEach((comment) => { %>
-				<div class="panel panel-default">
+				<div class="panel panel-default col-sm-12">
 				  <div class="panel-heading"><h5><%= comment.user.username%></h5>
 					
 				  </div>
@@ -46,6 +42,17 @@
 				  </div>
 				</div>
 			<%})%>
+
+
+			<form class="col-sm-12" action="/comment/add" method="POST">
+			  <div class="form-group">
+			    <label for="comment">Add comment:</label>
+			    <input type="hidden" name="product_title" value="<%=product.title%>">
+			    <input type="hidden" name="product_id" value="<%=product.id%>">
+			    <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp" placeholder="Enter comment">
+			  </div>
+			</form>
+
 		</div>
 	</div>
 
