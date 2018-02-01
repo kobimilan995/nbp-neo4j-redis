@@ -35,7 +35,6 @@ router.post('/signup', (req, res) => {
 	//console.log(req.body);
 	//return res.status(200).send(req.body);
 
-	console.log("1");
 
 		
 	Neo4jsession.run("CREATE (u:User { username:'" + req.body.username + "',fullname: '" + req.body.fullName + "', password: '" + req.body.password + "', email: '" 
@@ -43,7 +42,6 @@ router.post('/signup', (req, res) => {
 		//return res.status(200).send('Try to log in now.');
 		//console.log(result.records[0]._fields[0].identity.low);
 		//return;
-		console.log("2");
 
 		var imageName = result.records[0]._fields[0].identity.low + ".jpg";
 		var imagePath = path.join( __dirname , '/../' , 'public/uploads/usersProfiles/' + imageName);
@@ -57,7 +55,6 @@ router.post('/signup', (req, res) => {
 		Neo4jsession.run
 		("MATCH (u: User) WHERE u.email='" + req.body.email + "' SET u.profileImage=ID(u)+" + "'.jpg'" + " return u").then( rec => {
 		
-		console.log("3.");	
 		console.log(rec);
 
 
@@ -72,7 +69,7 @@ router.post('/signup', (req, res) => {
 //login
 router.post('/login', (req, res) => {
 	
-	console.log( "req.body:" + req.body);
+//	console.log( "req.body:" + req.body);
 
 	userSession = req.session;
 	Neo4jsession.run("MATCH (u: User) WHERE u.email='" + req.body.email + "' AND u.password ='" + req.body.password +
@@ -126,6 +123,13 @@ router.get('/profile', authenticated, (req, res) => {
 //changeEmail
 router.post('/changeEmail', authenticated, (req, res) => {
 	userSession = req.session;
+	
+
+
+		image.mv(imagePath, (err) => {
+			if(err)
+				return res.status(500).send(err);
+		});
 
 	Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' SET u.email='" 
 	+ req.body.newEmail + "' return u").then( result => {
@@ -138,6 +142,34 @@ router.post('/changeEmail', authenticated, (req, res) => {
 		});
 	});
 
+
+
+router.post('/changeProfileImage', authenticated, (req, res) => {
+	userSession = req.session;
+	//console.log(req.body);
+
+	//console.log(userSession.user);
+	//return;
+
+	var image = req.files.userImage;
+
+
+	
+
+	Neo4jsession.run("MATCH (u:User) WHERE u.email='" + userSession.user.email + "' return u").then( result => {
+				var imageName = result.records[0]._fields[0].identity.low + ".jpg";
+				var imagePath = path.join( __dirname , '/../' , 'public/uploads/usersProfiles/' + imageName);
+				//userSession.user = undefined;//record._fields[0].properties;
+				image.mv(imagePath, (err) => {
+					if(err)
+						return res.status(500).send(err);
+				});
+
+				return res.redirect('/profile');
+		}).catch(err => {
+			return res.status(500).send(err);
+		});
+	});
 
 //changePassword
 router.post('/changePassword', authenticated, (req, res) => {

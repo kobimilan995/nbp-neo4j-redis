@@ -2,14 +2,57 @@
 <% include ../modals/changeProfileInfo/changePassword %>
 <% include ../modals/changeProfileInfo/changeProfileEmail %>
 
-<div class="profileDiv">
-    <p>Email: <%= auth.email %></p>
-    <a href="#" data-toggle="modal" data-target="#changeEmail-modal">
-            <span class="glyphicon glyphicon-pencil"></span> Change email
-    </a>
+<div class="profileContainer">
 
-    <a href="#" data-toggle="modal" data-target="#changePassword-modal"><span class="glyphicon glyphicon-pencil"></span> Change password</a>
+        <div class="profileDiv changeInfo">
+                <p>Email: <%= auth.email %></p>
+                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#changeEmail-modal">
+                        <span class="glyphicon glyphicon-pencil"></span> Change email
+                </a>
+            
+                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#changePassword-modal"><span class="glyphicon glyphicon-pencil"></span> Change password</a>
+        </div>
+            
+
+        <div class="text-center">
+                <form action="/changeProfileImage" method="POST" enctype="multipart/form-data">
+                    
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <% if(auth.profileImage == undefined || auth.profileImage == null || auth.profileImage == ''){ %>    
+                        <div class="fileinput-new thumbnail img-raised">
+                                <img src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" alt="...">
+                        </div>
+                        <% }
+                        else 
+                        { %>
+                            <div class="fileinput-new thumbnail img-raised">
+                                <img src="uploads/usersProfiles/<%=auth.profileImage%>" style="max-width: 240px; max-height: 300px;" alt="...">
+                            </div>
+                        <% } %>
+                            
+                            <div class="fileinput-preview fileinput-exists thumbnail img-raised" style="max-width: 240px; max-height: 300px;"></div>
+                            
+                            <div style="    display: flex;
+                            flex-direction: column;
+                            justify-content: space-around;
+                            align-items: center;">
+                                <label class="btn btn-raised btn-round btn-default btn-file">
+                                    <span class="fileinput-new">Select new picture</span>
+                                    <span class= "fileinput-exists">Select new picture</button>
+                                    <input type="file" style=" display:none" name="userImage" placeholder="" />
+                                </label>
+                                    
+                                <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                                <button class="btn btn-info btn-round fileinput-exists" type="submit">Save</button>
+                            </div>
+                    </div>
+            </form>
+            
+                    
+            </div>
+            
 </div>
-<div>
-</div>
+
+
+
 <% include ../layouts/bottom %>
