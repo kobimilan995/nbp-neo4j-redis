@@ -1,0 +1,35 @@
+<% include ../layouts/top %>
+
+<div class="profileContainer">
+
+        <div class="profileDiv changeInfo">
+                <p>Username: <%= userProf.username %></p>
+        </div>
+            
+
+    <div class="text-center">
+                
+                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                    <% if(userProf.profileImage == undefined || userProf.profileImage == null || userProf.profileImage == ''){ %>    
+                    <div class="fileinput-new thumbnail img-raised">
+                            <img src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" alt="...">
+                    </div>
+                    <% }
+                    else 
+                    { %>
+                        <div class="thumbnail img-raised">
+                            <img src="/uploads/usersProfiles/<%=userProf.profileImage%>" style="max-width: 240px; max-height: 300px;" alt="...">
+                        </div>
+                    <% } %>
+
+                </div>
+    </div>
+            
+                    
+</div>
+            
+
+
+
+
+<% include ../layouts/bottom %>

@@ -59,9 +59,48 @@ var unAuthenticated = function (req, res, next) {
   }
 //landing page
 app.get('/', unAuthenticated, (req, res) => {
-	res.render('pages/landing', {
-			auth: req.session.user
+
+    // shoppingCartProducts = [];
+	// Neo4jsession
+	// .run("MATCH (u:User { email: '"+req.session.user.email+"' })<-[:IS_ORDERED_BY]-(p:Product) RETURN p").then((result) => {
+	// 	result.records.forEach((item) => {
+	// 		shoppingCartProducts.push({
+	// 			id: item._fields[0].identity.low,
+	// 			title:item._fields[0].properties.title
+	// 		});
+	// 	});
+	// }).catch(error => {
+	// 	console.log(error);
+	// });
+	var products = [];
+	Neo4jsession
+	.run('MATCH (n:Product)-[r:BELONGS_TO]-(b:Category) RETURN n,r,b')
+	.then((result) => {
+		result.records.forEach((item) => {
+			var product = {
+				id: item._fields[0].identity.low,
+				title:item._fields[0].properties.title,
+				description:item._fields[0].properties.description,
+				price:item._fields[0].properties.price,
+				image:item._fields[0].properties.image,
+				category:item._fields[2].properties.title,
+				isInShoppingCart: false
+			};
+			// shoppingCartProducts.forEach(scProduct => {
+			// 	if(product.id == scProduct.id) {
+			// 		product.isInShoppingCart = true;
+			// 	}
+			// })
+			products.push(product);
 		});
+		res.render('pages/landing', {
+			auth: req.session.user,
+			products: products
+		});
+	})
+	.catch((error) => {
+		console.log(error);
+	});
 });
 
 

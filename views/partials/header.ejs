@@ -28,9 +28,11 @@
                     <a href="/about" class="nav-link">About</a>
                 </li>
 
+                <% if(auth != undefined || auth != null) { %>
                 <li class="nav-item">
-                    <a href="/shoppingCart" class="nav-link"><i class="fas fa-shopping-cart"></i>Shopping cart</a>
+                    <a href="/shoppingCart" class="nav-link"><i class="fas fa-shopping-cart"></i> Shopping cart</a>
                 </li>
+                <% } %>
 
             </ul>
 
@@ -59,13 +61,20 @@
                         
                         <li class="nav-item">
                             <a  class="nav-link" href="#" data-toggle="modal" data-target="#login-modal">
-                                <i class="fas fa-sign-in-alt"></i>
-                                 Login
+                                <i class="fas fa-sign-in-alt"></i> Login
                             </a>
                         </li>
                         <%} else { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="/profile"><i class="material-icons">account_circle</i> Profile</a>
+                            <a class="nav-link" href="/profile">
+                                <!-- <i class="material-icons">account_circle</i> -->
+                                <%if (auth.role != 'admin') { %>
+                                <% if( auth.profileImage != undefined || auth.profileImage != null || auth.profileImage != '') { %>
+                                <img  class="img-circle" src="/uploads/usersProfiles/<%=auth.profileImage%>" style="width: 25px; height: 25px;" alt="ProfileImg">
+                                <% } else { %>
+                                    <img class="img-circle" src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png" style="width: 25px; height: 25px;" alt="...">
+                                <% } } %>
+                                Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout"><i class="fas fa-sign-in-alt"></i> Log out</a>

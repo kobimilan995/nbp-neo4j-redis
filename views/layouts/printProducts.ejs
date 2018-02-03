@@ -1,0 +1,37 @@
+<div class="col-sm-9">
+    <h2>Products:</h2>
+    <div class="row">
+            <div class="col-sm-12">
+                <div class="row productsContainerIndex">   
+                <% products.forEach((product) => { %>
+        
+                    <div class="card" style="width: 15rem;">
+                            <img class="card-img-top" src="../../../uploads/<%= product.image%>" alt="productImage">
+                            <div class="card-body productInDashbord">
+                            <h4 class="card-title"> <a href="/product/<%= product.id %>"><%= product.title %></a></h4>
+                            <p class="card-text"><%= product.category%></p>
+                            <p>Price: <%= product.price %> $</p>
+
+                            <% if(auth != undefined || auth != null) { %>
+                            <% if(product.isInShoppingCart == false) { %>
+                                <form action="/product/addToCart" method="POST">
+                                    <input type="hidden" name="product_title" value="<%= product.title %>">
+                                    <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
+                                </form>
+                                <% } %>
+        
+                                <% if(product.isInShoppingCart == true) {%>
+                                <form action="/product/removeFromCart" method="POST">
+                                    <input type="hidden" name="product_title" value="<%= product.title %>">
+                                    <input type="hidden" name="page_type" value="index">
+                                    <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
+                                </form>
+                                <% } %>
+                            <% } %>
+                            </div>
+                    </div>
+                <% }); %>
+                </div>
+            </div>
+    </div>
+</div>

@@ -12,19 +12,22 @@
 										</p>
 										<h3>Price: <%= product.price%> $</h3>
 										<% if(product.isInShoppingCart == false) { %>
-														<form action="/product/addToCart" method="POST">
-																<input type="hidden" name="product_title" value="<%= product.title %>">
-																<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
-														</form>
+
+														 <form action="/product/addToCart" method="POST">
+                                    <input type="hidden" name="product_title" value="<%= product.title %>">
+                                    <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
+                                </form>
 														<% } %>
 						
 														<% if(product.isInShoppingCart == true) {%>
-														<form action="/product/removeFromCart" method="POST">
-																<input type="hidden" name="product_title" value="<%= product.title %>">
-																<input type="hidden" name="page_type" value="index">
-																<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
-														</form>
-														<% } %>
+														  <form action="/product/removeFromCart" method="POST">
+                                    <input type="hidden" name="product_title" value="<%= product.title %>">
+                                    <input type="hidden" name="page_type" value="index">
+                                    <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
+                                </form>
+									<% } %>
+
+									
 									
 								</div>
 								<div class="col-sm-4">
@@ -33,13 +36,10 @@
 			</div>
 
 			<% product.comments.forEach((comment) => { %>
-				<div class="panel panel-default col-sm-12">
-				  <div class="panel-heading"><h5><%= comment.user.username%></h5>
-					
-				  </div>
-				  <div class="panel-body"><%= comment.text%>
-				  	<span class="pull-right"><%= comment.diffForHumans%></span>
-				  </div>
+				<div class="col-sm-12 comments">
+						<h5><a href="/user/<%= comment.user.username%>"><%= comment.user.username%>:</a></h5>
+						<div class=""><%= comment.text%></div>
+						<span class=""><%= comment.diffForHumans%></span>				
 				</div>
 			<%})%>
 
