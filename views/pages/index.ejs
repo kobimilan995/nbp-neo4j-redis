@@ -1,76 +1,7 @@
 <% include ../layouts/top %>
 <div class="row">
-    <div class="col-sm-9">
-        <div class="row productsContainerIndex">   
-        <% products.forEach((product) => { %>
-            <!-- <div class="col-sm-6">
-                <div class="panel" style="border: 2px solid #d3d3d3; margin-left: 10px; margin-right: 10px;">
-                 <div class="panel-heading text-center">
-                     <h3 style="display: inline;"><a style="color:black;" href="/product/<%= product.id %>"><%= product.title %></a>
-                    </h3> <span class="glyphicon glyphicon-question-sign pull-right" data-toggle="tooltip" title="<%= product.description%>"
-                         data-placement="bottom">             
-                 </span>
-                 </div>
-                 <div class="row">
-                    <img src='../../../uploads/<%= product.image%>' width="80%" style="margin-left: 10%; border-radius: 10px;" height="300px" alt="">
-                 </div>
-                 
-                 <div class="panel-body text-center">
-                    <hr>
-                    <p>Price: <%= product.price %> $</p>
-                    <p>Category: <%= product.category%></p>
-                </div>
-                 
-                 <div class="panel-footer text-center">
-                        <% if(product.isInShoppingCart == false) { %>
-                        <form action="/product/addToCart" method="POST">
-                            <input type="hidden" name="product_title" value="<%= product.title %>">
-                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</button>
-                        </form>
-                        <% } %>
 
-                        <% if(product.isInShoppingCart == true) {%>
-                        <form action="/product/removeFromCart" method="POST">
-                            <input type="hidden" name="product_title" value="<%= product.title %>">
-                            <input type="hidden" name="page_type" value="index">
-                            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-shopping-cart"></span> Remove from cart </button>
-                        </form>
-                        <% } %>
-                    
-                 </div>
-                </div>
-            </div> -->
-
-            <div class="card" style="width: 20rem;">
-                    <img class="card-img-top" src="../../../uploads/<%= product.image%>" alt="productImage">
-                    <div class="card-body productInDashbord">
-                      <h4 class="card-title"><%= product.title %></h4>
-                      <p class="card-text"><%= product.category%></p>
-                      <p>Price: <%= product.price %> $</p>
-                      <% if(product.isInShoppingCart == false) { %>
-                        <form action="/product/addToCart" method="POST">
-                            <input type="hidden" name="product_title" value="<%= product.title %>">
-                            <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
-                        </form>
-                        <% } %>
-
-                        <% if(product.isInShoppingCart == true) {%>
-                        <form action="/product/removeFromCart" method="POST">
-                            <input type="hidden" name="product_title" value="<%= product.title %>">
-                            <input type="hidden" name="page_type" value="index">
-                            <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
-                        </form>
-                        <% } %>
-                    </div>
-            </div>
-        <% }); %>
-        </div>
-    </div>
-
-    <div class="col-sm-3">        
-        <div class="well">
-            <h6>Most popular products:</h6>
-        </div>
-    </div>
+    <% include ../layouts/printProducts %>
+    <% include ../layouts/sideBar %>
 </div>
 <% include ../layouts/bottom%>

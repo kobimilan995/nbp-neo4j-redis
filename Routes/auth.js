@@ -358,6 +358,22 @@ router.post('/comment/add', authenticated, (req,res) => {
 		res.redirect('/product/'+req.body.product_id);
 	})
 });
+
+//http://localhost:3001/user/kobicar
+router.get('/user/:username', authenticated, (req, res) => {
+
+	
+	Neo4jsession.run("MATCH (u:User) WHERE u.username='" + req.params.username + "' return u").then( result => {
+		if(result.records[0].length == 1)
+		{
+			return res.render('pages/userProfile', { auth: req.session.user, 
+				 userProf: result.records[0]._fields[0].properties } );
+		}
+		else
+			return res.status(404).send({ error: "not found"});
+	})
+
+})
 /*
 * AUTH end
 */
