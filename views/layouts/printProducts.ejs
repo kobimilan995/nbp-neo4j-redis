@@ -28,6 +28,25 @@
                                 </form>
                                 <% } %>
                             <% } %>
+
+
+                            <% if(auth != undefined || auth != null) { %>
+                                <% if(product.isInShoppingCart == false) { %>
+                                    <form action="/product/addToCart" method="POST">
+                                        <input type="hidden" name="product_title" value="<%= product.title %>">
+                                        <button type="submit" class="btn btn-success"><i class="material-icons favoriteButton">star_rate</i> Favorite</button>
+                                    </form>
+                                    <% } %>
+            
+                                    <% if(product.isInShoppingCart == true) {%>
+                                    <form action="/product/removeFromCart" method="POST">
+                                        <input type="hidden" name="product_title" value="<%= product.title %>">
+                                        <input type="hidden" name="page_type" value="index">
+                                        <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from favorite </button>
+                                    </form>
+                                    <% } %>
+                                <% } %>
+                                
                             </div>
                     </div>
                 <% }); %>

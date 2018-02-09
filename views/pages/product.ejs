@@ -1,60 +1,62 @@
 <% include ../layouts/top.ejs %>
 <div class="row">
     <div class="col-sm-8">
-		<div class="row">
-			<div class="col-sm-12" style="display:flex;">
-								<div class="col-sm-8 text-center" style="    display: flex;
-								flex-direction: column;
-								justify-content: space-evenly;">
-										<b><h1><%= product.title%></h1></b>
-										<p>
-											<%= product.description%>
-										</p>
-										<h3>Price: <%= product.price%> $</h3>
-										<% if(product.isInShoppingCart == false) { %>
-
-														 <form action="/product/addToCart" method="POST">
-                                    <input type="hidden" name="product_title" value="<%= product.title %>">
-                                    <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
-                                </form>
-														<% } %>
-						
-														<% if(product.isInShoppingCart == true) {%>
-														  <form action="/product/removeFromCart" method="POST">
-                                    <input type="hidden" name="product_title" value="<%= product.title %>">
-                                    <input type="hidden" name="page_type" value="index">
-                                    <button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
-                                </form>
-									<% } %>
-
-									
-									
-								</div>
-								<div class="col-sm-4">
-										<img src='../../../uploads/<%= product.image%>' style="max-width: 240px; max-height: 300px;" alt="">
-								</div>
-			</div>
-
 			<div class="row">
-					<% product.comments.forEach((comment) => { %>
-						<div class="col-sm-12 comments">
-								<h5><a href="/user/<%= comment.user.username%>"><%= comment.user.username%>:</a></h5>
-								<div class=""><%= comment.text%></div>
-								<span class=""><%= comment.diffForHumans%></span>				
-						</div>
-					<%})%>
-		
-			</div>
-			
+				<div class="col-sm-12" style="display:flex;">
+									<div class="col-sm-8 text-center" style="    display: flex;
+									flex-direction: column;
+									justify-content: space-evenly;">
+											<b><h1><%= product.title%></h1></b>
+											<p> Desctiption: 
+												<%= product.description%>
+											</p>
+											<h3>Price: <%= product.price%> $</h3>
+											<% if(product.isInShoppingCart == false) { %>
 
-			<form class="col-sm-12" action="/comment/add" method="POST">
-			  <div class="form-group">
-			    <label for="comment">Add comment:</label>
-			    <input type="hidden" name="product_title" value="<%=product.title%>">
-			    <input type="hidden" name="product_id" value="<%=product.id%>">
-			    <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp" placeholder="Enter comment">
-			  </div>
-			</form>
+															<form action="/product/addToCart" method="POST">
+																			<input type="hidden" name="product_title" value="<%= product.title %>">
+																			<button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
+																	</form>
+															<% } %>
+							
+															<% if(product.isInShoppingCart == true) {%>
+																<form action="/product/removeFromCart" method="POST">
+																			<input type="hidden" name="product_title" value="<%= product.title %>">
+																			<input type="hidden" name="page_type" value="index">
+																			<button type="submit" class="btn btn-danger"><i class="material-icons">remove_shopping_cart</i> Remove from cart </button>
+																	</form>
+										<% } %>
+
+										
+										
+									</div>
+									<div class="col-sm-4">
+											<img src='../../../uploads/<%= product.image%>' style="max-width: 240px; max-height: 300px;" alt="">
+									</div>
+				</div>
+
+				<div class="row" style=" margin: 1%; border-bottom: 1px solid #d2d2d2;">
+						<% product.comments.forEach((comment) => { %>
+							<div class="col-sm-12 comments">
+									<h5><a class="commentsElements" href="/user/<%= comment.user.username%>"><%= comment.user.username%>:</a></h5>
+									<div class="commentsElements"><%= comment.text%></div>
+									<!-- <div class="commentsElements"><button class="btn btn-rounded btn-info"><i class="fas fa-edit"></i></button></div> -->
+									<!-- <div class="commentsElements"><button class="btn btn-rounded btn-danger"><i class="material-icons">highlight_off</i></button></div> -->
+									<span class="commentsElements"><%= comment.diffForHumans%></span>				
+							</div>
+						<%})%>
+			
+				</div>
+
+
+				<form class="col-sm-12" action="/comment/add" method="POST">
+					<div class="form-group">
+						<p for="comment">Add comment:</p>
+						<input type="hidden" name="product_title" value="<%=product.title%>">
+						<input type="hidden" name="product_id" value="<%=product.id%>">
+						<input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp" placeholder="Enter comment">
+					</div>
+				</form>
 
 		</div>
 	</div>
