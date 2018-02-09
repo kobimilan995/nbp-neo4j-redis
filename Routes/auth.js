@@ -5,7 +5,53 @@ var express = require('express')
   , router = express.Router();
 var moment = require('moment');
 var path = require("path");
+var redis = require('redis');
+var client = redis.createClient();
 
+/*
+* ADMIN ROUTES
+*/
+//redis
+var mostViewed = function(req,res,next) {
+	client.get('mostViewedProductss', (err, data) => {
+		if(err) throw err;
+
+		if(data != null) {
+			res.render('pages/mostViewed', {
+				products: JSON.parse(data),
+				auth: req.session.user
+			});
+				console.log('products from redis',JSON.parse(data));
+		} else {
+			next();
+		}
+	});
+}
+// end redis
+router.get('/mostViewed', mostViewed, (req, res) => {
+	var products = [];
+	Neo4jsession.run("MATCH (p:Product) RETURN p ORDER BY p.views DESC").then( result => {
+		result.records.forEach(item => {
+			var product = {
+				id: item._fields[0].identity.low,
+				title:item._fields[0].properties.title,
+				description:item._fields[0].properties.description,
+				price:item._fields[0].properties.price,
+				image:item._fields[0].properties.image,
+				views:item._fields[0].properties.views
+			};
+			products.push(product);
+		});
+		client.setex('mostViewedProductss', 5, JSON.stringify(products));
+		console.log('products from neo', products);
+		res.render('pages/mostViewed', {
+			products: products,
+			auth: req.session.user
+		});
+	}).catch(error => {
+		console.log(error);
+	});
+});
  
 /*
 * AUTH ROUTES
@@ -308,7 +354,7 @@ router.get('/product/:id', authenticated, (req, res) => {
 	});
 
 	Neo4jsession
-	.run("MATCH (p:Product)-[r:BELONGS_TO]-(b:Category) WHERE ID(p) = "+req.params.id+"  RETURN p,b").then((result) => {
+	.run("MATCH (p:Product)-[r:BELONGS_TO]-(b:Category) WHERE ID(p) = "+req.params.id+" SET p.views = p.views + 1 RETURN p,b").then((result) => {
 		var product = result.records[0]._fields[0].properties;
 		product.id = result.records[0]._fields[0].identity.low;
 		product.category = {

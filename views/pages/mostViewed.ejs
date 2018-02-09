@@ -1,0 +1,25 @@
+<% include ../layouts/top %>
+<div class="row">
+	<div class="col-sm-9">
+	    <h2>Most viewed products: (cache)</h2>
+	    <div class="row">
+	            <div class="col-sm-12">
+	                <div class="row productsContainerIndex">   
+	                <% products.forEach((product) => { %>
+	        
+	                    <div class="card" style="width: 15rem;">
+	                            <img class="card-img-top" src="../../../uploads/<%= product.image%>" alt="productImage">
+	                            <div class="card-body productInDashbord">
+	                            <h4 class="card-title"> <a href="/product/<%= product.id %>"><%= product.title %></a></h4>
+	                            <p class="card-text"><%= product.category%></p>
+	                            <p>Price: <%= product.price %> $</p>
+	                            <p>Views: <%= product.views%></p>
+	                            </div>
+	                    </div>
+	                <% }); %>
+	                </div>
+	            </div>
+	    </div>
+	</div>
+</div>
+<% include ../layouts/bottom%>

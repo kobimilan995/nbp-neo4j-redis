@@ -19,7 +19,9 @@ var redisClient = redis.createClient();
 //redisClient.set('key', 'Hello world!', redis.print);
 
 //redisClient.get('key', (err, resp) => { console.log(resp); } );
+//redid middleware
 
+//end redis middleware
 //neo4j
 var Neo4jsession = require('./Routes/ne4jConfig');
 
