@@ -35,14 +35,17 @@
 								</div>
 			</div>
 
-			<% product.comments.forEach((comment) => { %>
-				<div class="col-sm-12 comments">
-						<h5><a href="/user/<%= comment.user.username%>"><%= comment.user.username%>:</a></h5>
-						<div class=""><%= comment.text%></div>
-						<span class=""><%= comment.diffForHumans%></span>				
-				</div>
-			<%})%>
-
+			<div class="row">
+					<% product.comments.forEach((comment) => { %>
+						<div class="col-sm-12 comments">
+								<h5><a href="/user/<%= comment.user.username%>"><%= comment.user.username%>:</a></h5>
+								<div class=""><%= comment.text%></div>
+								<span class=""><%= comment.diffForHumans%></span>				
+						</div>
+					<%})%>
+		
+			</div>
+			
 
 			<form class="col-sm-12" action="/comment/add" method="POST">
 			  <div class="form-group">
