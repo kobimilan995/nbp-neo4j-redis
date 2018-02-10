@@ -21,7 +21,7 @@ var mostViewed = function(req,res,next) {
 				products: JSON.parse(data),
 				auth: req.session.user
 			});
-				console.log('products from redis',JSON.parse(data));
+			console.log('products from redis',JSON.parse(data));
 		} else {
 			next();
 		}
@@ -420,6 +420,39 @@ router.get('/user/:username', authenticated, (req, res) => {
 	})
 
 })
+
+router.get('/favorites', (req, res) => {
+	Neo4jsession.run("match (u :User) where u.email='" + req.session.email + "' return (u)-[:FAVORITE]-(:Product)").then(
+		result => {
+			res.status(200).send(result);
+		}).catch(err => {
+			if(err)
+				Console.log(err);
+		})
+});
+
+router.post('/addToFavorite', (req, res) => {
+
+	Neo4jsession.run("MATCH (u :User), (p :Product) WHERE u.email='" + req.session.user.email + 
+	"' AND ID(p)=" + req.body.productID + " CREATE (u)->(r:FAVORITE)-(p) return r").then (res => {
+		res.redirect('/favorites');
+	}).catch(err => {
+		if(err)
+			throw err;
+	})
+});
+
+router.post('/removeFromFavorite', (req,res) =>
+{
+	Neo4jsession.run("match (u :User)-(r:FAVORITE)-(p :Product) where u.email='" + req.session.user.email + "' and ID(p)=" + req.body.productID + " delete r")
+	.then(result =>
+	{
+		res.redirect("/favorites");
+	}).catch(err => {
+		if(err)
+			throw err;
+	})
+});
 /*
 * AUTH end
 */
