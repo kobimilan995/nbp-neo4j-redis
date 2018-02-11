@@ -31,14 +31,14 @@
 
 
                             <% if(auth != undefined || auth != null) { %>
-                                <% if(product.isInShoppingCart == false) { %>
+                                <% if(product.isFavorite == false) { %>
                                     <form action="/addToFavorite" method="POST">
                                         <input type="hidden" name="productID" value="<%= product.id %>">
                                         <button type="submit" class="btn btn-success"><i class="material-icons favoriteButton">star_rate</i> Favorite</button>
                                     </form>
                                     <% } %>
             
-                                    <% if(product.isInShoppingCart == true) {%>
+                                    <% if(product.isFavorite == true) {%>
                                     <form action="/removeFromFavorite" method="POST">
                                         <input type="hidden" name="productID" value="<%= product.id %>">
                                         <input type="hidden" name="page_type" value="index">

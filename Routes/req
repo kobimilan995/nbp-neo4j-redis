@@ -1,0 +1,276 @@
+[
+  {
+    "keys": [
+      "(u)-[:FAVORITE]-(:Product)"
+    ],
+    "length": 1,
+    "_fields": [
+      [
+        {
+          "start": {
+            "identity": {
+              "low": 105,
+              "high": 0
+            },
+            "labels": [
+              "User"
+            ],
+            "properties": {
+              "password": "kobicar",
+              "role": "buyer",
+              "profileImage": "105.jpg",
+              "fullname": "Milan Urosevic",
+              "email": "kobicar@gmail.com",
+              "username": "kobicar"
+            }
+          },
+          "end": {
+            "identity": {
+              "low": 86,
+              "high": 0
+            },
+            "labels": [
+              "Product"
+            ],
+            "properties": {
+              "image": "Frizider1517487916219.jpg",
+              "description": "ledi",
+              "title": "Frizider",
+              "price": "500"
+            }
+          },
+          "segments": [
+            {
+              "start": {
+                "identity": {
+                  "low": 105,
+                  "high": 0
+                },
+                "labels": [
+                  "User"
+                ],
+                "properties": {
+                  "password": "kobicar",
+                  "role": "buyer",
+                  "profileImage": "105.jpg",
+                  "fullname": "Milan Urosevic",
+                  "email": "kobicar@gmail.com",
+                  "username": "kobicar"
+                }
+              },
+              "relationship": {
+                "identity": {
+                  "low": 67,
+                  "high": 0
+                },
+                "start": {
+                  "low": 105,
+                  "high": 0
+                },
+                "end": {
+                  "low": 86,
+                  "high": 0
+                },
+                "type": "FAVORITE",
+                "properties": {}
+              },
+              "end": {
+                "identity": {
+                  "low": 86,
+                  "high": 0
+                },
+                "labels": [
+                  "Product"
+                ],
+                "properties": {
+                  "image": "Frizider1517487916219.jpg",
+                  "description": "ledi",
+                  "title": "Frizider",
+                  "price": "500"
+                }
+              }
+            }
+          ],
+          "length": 1
+        },
+        {
+          "start": {
+            "identity": {
+              "low": 105,
+              "high": 0
+            },
+            "labels": [
+              "User"
+            ],
+            "properties": {
+              "password": "kobicar",
+              "role": "buyer",
+              "profileImage": "105.jpg",
+              "fullname": "Milan Urosevic",
+              "email": "kobicar@gmail.com",
+              "username": "kobicar"
+            }
+          },
+          "end": {
+            "identity": {
+              "low": 86,
+              "high": 0
+            },
+            "labels": [
+              "Product"
+            ],
+            "properties": {
+              "image": "Frizider1517487916219.jpg",
+              "description": "ledi",
+              "title": "Frizider",
+              "price": "500"
+            }
+          },
+          "segments": [
+            {
+              "start": {
+                "identity": {
+                  "low": 105,
+                  "high": 0
+                },
+                "labels": [
+                  "User"
+                ],
+                "properties": {
+                  "password": "kobicar",
+                  "role": "buyer",
+                  "profileImage": "105.jpg",
+                  "fullname": "Milan Urosevic",
+                  "email": "kobicar@gmail.com",
+                  "username": "kobicar"
+                }
+              },
+              "relationship": {
+                "identity": {
+                  "low": 66,
+                  "high": 0
+                },
+                "start": {
+                  "low": 105,
+                  "high": 0
+                },
+                "end": {
+                  "low": 86,
+                  "high": 0
+                },
+                "type": "FAVORITE",
+                "properties": {}
+              },
+              "end": {
+                "identity": {
+                  "low": 86,
+                  "high": 0
+                },
+                "labels": [
+                  "Product"
+                ],
+                "properties": {
+                  "image": "Frizider1517487916219.jpg",
+                  "description": "ledi",
+                  "title": "Frizider",
+                  "price": "500"
+                }
+              }
+            }
+          ],
+          "length": 1
+        },
+        {
+          "start": {
+            "identity": {
+              "low": 105,
+              "high": 0
+            },
+            "labels": [
+              "User"
+            ],
+            "properties": {
+              "password": "kobicar",
+              "role": "buyer",
+              "profileImage": "105.jpg",
+              "fullname": "Milan Urosevic",
+              "email": "kobicar@gmail.com",
+              "username": "kobicar"
+            }
+          },
+          "end": {
+            "identity": {
+              "low": 88,
+              "high": 0
+            },
+            "labels": [
+              "Product"
+            ],
+            "properties": {
+              "image": "komoda1517488041176.jpg",
+              "description": "udobna",
+              "title": "komoda",
+              "price": "600"
+            }
+          },
+          "segments": [
+            {
+              "start": {
+                "identity": {
+                  "low": 105,
+                  "high": 0
+                },
+                "labels": [
+                  "User"
+                ],
+                "properties": {
+                  "password": "kobicar",
+                  "role": "buyer",
+                  "profileImage": "105.jpg",
+                  "fullname": "Milan Urosevic",
+                  "email": "kobicar@gmail.com",
+                  "username": "kobicar"
+                }
+              },
+              "relationship": {
+                "identity": {
+                  "low": 46,
+                  "high": 0
+                },
+                "start": {
+                  "low": 105,
+                  "high": 0
+                },
+                "end": {
+                  "low": 88,
+                  "high": 0
+                },
+                "type": "FAVORITE",
+                "properties": {}
+              },
+              "end": {
+                "identity": {
+                  "low": 88,
+                  "high": 0
+                },
+                "labels": [
+                  "Product"
+                ],
+                "properties": {
+                  "image": "komoda1517488041176.jpg",
+                  "description": "udobna",
+                  "title": "komoda",
+                  "price": "600"
+                }
+              }
+            }
+          ],
+          "length": 1
+        }
+      ]
+    ],
+    "_fieldLookup": {
+      "(u)-[:FAVORITE]-(:Product)": 0
+    }
+  }
+]

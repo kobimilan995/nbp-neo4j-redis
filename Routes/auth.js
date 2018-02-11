@@ -249,6 +249,17 @@ router.get('/home', authenticated,  (req, res) => {
 	}).catch(error => {
 		console.log(error);
 	});
+
+	favorite = [];
+	Neo4jsession.run("match (u:User { email:'" + req.session.user.email + "'})-[:FAVORITE]-(p:Product) return p").then(r => {
+		r.records.forEach((el) => {
+			favorite.push( { 
+				id: el._fields[0].identity.low,
+				title: el._fields[0].properties.title
+			})
+		});
+	})
+
 	var products = [];
 	Neo4jsession
 	.run('MATCH (n:Product)-[r:BELONGS_TO]-(b:Category) RETURN n,r,b')
@@ -261,15 +272,25 @@ router.get('/home', authenticated,  (req, res) => {
 				price:item._fields[0].properties.price,
 				image:item._fields[0].properties.image,
 				category:item._fields[2].properties.title,
-				isInShoppingCart: false
+				isInShoppingCart: false,
+				isFavorite: false
 			};
 			shoppingCartProducts.forEach(scProduct => {
 				if(product.id == scProduct.id) {
 					product.isInShoppingCart = true;
 				}
 			})
+
+			favorite.forEach(favProd => {
+				if(product.id == favProd.id) {
+					product.isFavorite = true;
+				}
+			})
 			products.push(product);
 		});
+
+		console.log(products);
+
 		res.render('pages/index', {
 			auth: req.session.user,
 			products: products
@@ -421,33 +442,53 @@ router.get('/user/:username', authenticated, (req, res) => {
 
 })
 
-router.get('/favorites', (req, res) => {
-	Neo4jsession.run("match (u :User) where u.email='" + req.session.email + "' return (u)-[:FAVORITE]-(:Product)").then(
-		result => {
-			res.status(200).send(result);
+router.get('/favorites', authenticated, (req, res) => {
+	products = [];
+	Neo4jsession.run("match (u:User { email:'" + req.session.user.email + "'})-[:FAVORITE]-(p:Product) return p").then(r => {
+		r.records.forEach((el) => {
+			//console.log(el._fields);
+			products.push( { 
+				id: el._fields[0].identity.low,
+				title: el._fields[0].properties.title,
+				description: el._fields[0].properties.description,
+				price: el._fields[0].properties.price,
+				image: el._fields[0].properties.image,
+				category: el._fields[0].properties.title
+			})
+		})
+			res.render('pages/favorite', {
+				auth: req.session.user,
+				products: products
+			})
 		}).catch(err => {
 			if(err)
-				Console.log(err);
+				console.log(err);
 		})
 });
 
-router.post('/addToFavorite', (req, res) => {
+router.post('/addToFavorite', authenticated, (req, res) => {
 
-	Neo4jsession.run("MATCH (u :User), (p :Product) WHERE u.email='" + req.session.user.email + 
-	"' AND ID(p)=" + req.body.productID + " CREATE (u)->(r:FAVORITE)-(p) return r").then (res => {
-		res.redirect('/favorites');
+	var q = "match (u:User),(p:Product) where u.email='" + req.session.user.email + 
+	"' and ID(p)=" + req.body.productID + "  create (u)-[:FAVORITE]->(p) return u;";
+
+	Neo4jsession.run(q).then(r => {
+		res.redirect("/home");
 	}).catch(err => {
 		if(err)
 			throw err;
 	})
 });
 
-router.post('/removeFromFavorite', (req,res) =>
+router.post('/removeFromFavorite', authenticated, (req,res) =>
 {
-	Neo4jsession.run("match (u :User)-(r:FAVORITE)-(p :Product) where u.email='" + req.session.user.email + "' and ID(p)=" + req.body.productID + " delete r")
-	.then(result =>
+
+	var q = "match (u:User)-[r:FAVORITE]-(p:Product) where u.email='"
+	+ req.session.user.email + "' and ID(p)=" + req.body.productID + " delete r return u;"
+	
+	
+	Neo4jsession.run(q).then(result =>
 	{
-		res.redirect("/favorites");
+		res.redirect('/home');
 	}).catch(err => {
 		if(err)
 			throw err;
