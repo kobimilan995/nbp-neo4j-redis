@@ -95,9 +95,12 @@ app.get('/', unAuthenticated, (req, res) => {
 			// })
 			products.push(product);
 		});
+
+
+		
 		res.render('pages/landing', {
 			auth: req.session.user,
-			products: products
+			products: products,
 		});
 	})
 	.catch((error) => {
