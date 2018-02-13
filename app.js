@@ -61,19 +61,6 @@ var unAuthenticated = function (req, res, next) {
   }
 //landing page
 app.get('/', unAuthenticated, (req, res) => {
-
-    // shoppingCartProducts = [];
-	// Neo4jsession
-	// .run("MATCH (u:User { email: '"+req.session.user.email+"' })<-[:IS_ORDERED_BY]-(p:Product) RETURN p").then((result) => {
-	// 	result.records.forEach((item) => {
-	// 		shoppingCartProducts.push({
-	// 			id: item._fields[0].identity.low,
-	// 			title:item._fields[0].properties.title
-	// 		});
-	// 	});
-	// }).catch(error => {
-	// 	console.log(error);
-	// });
 	var products = [];
 	Neo4jsession
 	.run('MATCH (n:Product)-[r:BELONGS_TO]-(b:Category) RETURN n,r,b')
@@ -88,15 +75,8 @@ app.get('/', unAuthenticated, (req, res) => {
 				category:item._fields[2].properties.title,
 				isInShoppingCart: false
 			};
-			// shoppingCartProducts.forEach(scProduct => {
-			// 	if(product.id == scProduct.id) {
-			// 		product.isInShoppingCart = true;
-			// 	}
-			// })
 			products.push(product);
 		});
-
-
 		
 		res.render('pages/landing', {
 			auth: req.session.user,
@@ -114,6 +94,16 @@ app.get('/', unAuthenticated, (req, res) => {
 app.get('/about', (req,res) => {
 	res.render('pages/about', { auth: req.session.user });
 });
+
+
+//to create default admin
+app.get('/createAdmin', (req, res) => {
+	
+	Neo4jsession.run("create (u :User { email: 'admin@admin', password: 'admin', role: 'admin', fullname: 'admin', username: 'admin'}) return u;").then( r => {
+		res.redirect('/');
+	});
+})
+
 
 
 //console.log(adminR.stack);

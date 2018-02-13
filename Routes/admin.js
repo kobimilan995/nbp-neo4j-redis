@@ -48,7 +48,7 @@ router.get('/admin/dashboard',authenticated, (req, res) => {
 // end dashboard
 
 //update product
-router.post('/product/update', (req, res) => {
+router.post('/product/update',authenticated, (req, res) => {
 	Neo4jsession.run("MATCH (p:Product) WHERE ID(p) = "+req.body.id+" SET p.title = '"+req.body.title+"' SET p.description= '"+req.body.description+"' SET p.price='"+req.body.price+"' RETURN p")
 	.then(result => {
 		res.redirect('/admin/dashboard');
@@ -58,7 +58,7 @@ router.post('/product/update', (req, res) => {
 	});
 });
 //delete product
-router.post('/product/delete', (req, res) => {
+router.post('/product/delete',authenticated, (req, res) => {
 	Neo4jsession.run("MATCH (p:Product) WHERE ID(p) = "+req.body.id+" DETACH DELETE p")
 	.then(result => {
 		res.redirect('/admin/dashboard');
@@ -70,7 +70,7 @@ router.post('/product/delete', (req, res) => {
 
 //create product
 
-router.post('/product/create', (req, res) => {
+router.post('/product/create', authenticated, (req, res) => {
 	if (!req.files)
 		return res.status(400).send('No files were uploaded.');
 		 
@@ -98,6 +98,20 @@ router.post('/product/create', (req, res) => {
 		});
 
 	
+});
+
+//create category
+router.post('/createCatagory', authenticated, (req,res) => {
+
+	if(req.session.user.role == 'admin') {
+
+		Neo4jsession.run("create (c:Category{title:'" + req.body.title + "'}) return c;").then( r => {
+			res.redirect('/admin/dashboard');	
+		})
+	} else
+	{
+		res.redirect('/');
+	}
 });
 /*
 * END ADMIN ROUTES
