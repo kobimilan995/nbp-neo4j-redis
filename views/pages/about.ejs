@@ -8,5 +8,9 @@
 <p>You can find button 'Signup' on which click it will render form for creating new user.
 </p>
 <h3>After creating any type of user you must login with users email and passowrd.</h3>
+
+<h1>O projektu:</h1>
+
+<p>Projekat je kao što vidite rađen u Neo4j-u kao glavnoj bazi i Redis-u za keširanje. U pitanju je simulacija eCommerce sistema. Korisnik moze da se registruje, da lista proizvode, da dodaje proizvode u shopping cart, da dodaje proizvode kao omiljene, da postavlja komentare na proizvode... Specijalni korisnik (admin) moze da dodaje nove proizvode i da brise postojece proizvode. Prilikom testiranje pre nego sto dodate bilo koji proizvod, prvo morate dodati kategoriju inace vam kreiranje proizvoda bez kategorije nece biti dozvoljeno. Prilikom registracije stavili smo da svaki registrovani korisnik bude ujedno i admin da bi lakse testirali funkcionalnosti. Sto se tice redis kesiranja Most Viewed i Favorites proizvodi se ukoliko postoje u kesu prvo citaju odatle, ukoliko ne, uzimaju se iz baze, postavljaju u kes i vracaju korisiku.
 <% include ../layouts/bottom.ejs %>
 

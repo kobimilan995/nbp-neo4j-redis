@@ -13,14 +13,14 @@
                             <p>Price: <%= product.price %> $</p>
 
                             <% if(auth != undefined || auth != null) { %>
-                            <% if(product.isInShoppingCart == false && auth.role != 'admin') { %>
+                            <% if(product.isInShoppingCart == false) { %>
                                 <form action="/product/addToCart" method="POST">
                                     <input type="hidden" name="product_title" value="<%= product.title %>">
                                     <button type="submit" class="btn btn-success"><i class="material-icons">add_shopping_cart</i> Add to cart</button>
                                 </form>
                                 <% } %>
         
-                                <% if(product.isInShoppingCart == true && auth.role != 'admin') {%>
+                                <% if(product.isInShoppingCart == true) {%>
                                 <form action="/product/removeFromCart" method="POST">
                                     <input type="hidden" name="product_title" value="<%= product.title %>">
                                     <input type="hidden" name="page_type" value="index">
@@ -31,14 +31,14 @@
 
 
                             <% if(auth != undefined || auth != null) { %>
-                                <% if(product.isFavorite == false && auth.role != 'admin') { %>
+                                <% if(product.isFavorite == false) { %>
                                     <form action="/addToFavorite" method="POST">
                                         <input type="hidden" name="productID" value="<%= product.id %>">
                                         <button type="submit" class="btn btn-success"><i class="material-icons favoriteButton">star_rate</i> Favorite</button>
                                     </form>
                                     <% } %>
             
-                                    <% if(product.isFavorite == true && auth.role != 'admin') {%>
+                                    <% if(product.isFavorite == true) {%>
                                     <form action="/removeFromFavorite" method="POST">
                                         <input type="hidden" name="productID" value="<%= product.id %>">
                                         <input type="hidden" name="page_type" value="index">
